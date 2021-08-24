@@ -12,7 +12,7 @@ export const useData = (length, swap) => {
 
   const heights = useMemo(() => {
     const list = [];
-    for (let i = length - 1; i >= 0; i--) {
+    for (let i = length; i >= 1; i--) {
       list.push(i);
     }
     return list;

@@ -1,8 +1,9 @@
-import React, { useRef } from "react";
+import React, { useCallback, useRef } from "react";
 import { useColor } from "./useColor";
 import { useData } from "./useData";
 import { VertexColors, Object3D, Color } from "three";
 import { useFrame } from "@react-three/fiber";
+import { bubbleSort } from "./sorting/bubbleSort";
 
 const scratchObject3D = new Object3D();
 const scratchColor = new Color();
@@ -10,30 +11,43 @@ const scratchColor = new Color();
 export default function CylinderGroup({ length, swap }) {
   const { meshRef, positions } = useData(length, swap);
   const { colorAttrib, colorArray } = useColor(length);
-  const finished = useRef({});
+
+  const updateVisuals = useCallback(
+    (index) => {
+      scratchObject3D.position.set(
+        positions[index].x,
+        positions[index].height / 2,
+        positions[index].z
+      );
+      scratchObject3D.scale.set(1, positions[index].height, 1);
+      scratchObject3D.updateMatrix();
+      meshRef.current.setMatrixAt(index, scratchObject3D.matrix);
+
+      const color =
+        positions[index].height === positions[index].correctHeight
+          ? "rgb(43,191,48)"
+          : "rgb(36,102,177)";
+      scratchColor.set(color);
+      scratchColor.toArray(colorArray, index * 3);
+    },
+    [colorArray, meshRef, positions]
+  );
 
   useFrame(() => {
-    if (!meshRef.current) return;
-    for (let i = 0; i < 10; i++) {
-      if (Object.keys(finished.current).length === length) return;
-      let random1;
-      do {
-        random1 = Math.floor(Math.random() * length);
-      } while (finished.current[random1]);
+    if (!meshRef.current || !positions) return;
+    for (let i = 0; i < 50; i++) {
+      const index = bubbleSort(positions);
+      if (index === false) break;
 
-      finished.current[random1] = true;
-      const pos1 = positions[random1];
+      [positions[index].height, positions[index + 1].height] = [
+        positions[index + 1].height,
+        positions[index].height,
+      ];
 
-      scratchObject3D.position.set(pos1.x, pos1.correctY, pos1.z);
-      scratchObject3D.scale.set(1, pos1.correctHeight, 1);
-      scratchObject3D.updateMatrix();
-      meshRef.current.setMatrixAt(random1, scratchObject3D.matrix);
-
-      scratchColor.set("rgb(43,191,48)");
-      scratchColor.toArray(colorArray, random1 * 3);
+      updateVisuals(index);
+      updateVisuals(index + 1);
     }
     colorAttrib.current.needsUpdate = true;
-
     meshRef.current.instanceMatrix.needsUpdate = true;
   });
 

@@ -1,7 +1,8 @@
-const SPIRAL_RADIUS_VAR = 2;
+const SPIRAL_RADIUS_VAR = 5;
 const SPIRAL_ANGLE_VAR = 2.5;
 
 export const spiralLayout = (length) => {
+  const SPIRAL_RADIUS_VAR = Math.pow(length * 1000, 1 / 10);
   const newPositions = [];
   let theta = 0;
   const r = 1;

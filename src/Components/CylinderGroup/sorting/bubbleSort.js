@@ -15,9 +15,14 @@ export const bubbleSort = (array, start) => {
     if (i === 0) swapped = false;
     for (; i < array.length - counter; i++) {
       if (array[i].height < array[i + 1].height) {
+        [array[i].height, array[i + 1].height] = [
+          array[i + 1].height,
+          array[i].height,
+        ];
+        const indices = [i, i + 1];
         i++;
         swapped = true;
-        return i - 1;
+        return indices;
       }
     }
     i = 0;

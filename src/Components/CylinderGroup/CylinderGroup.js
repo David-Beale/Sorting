@@ -4,6 +4,8 @@ import { useData } from "./useData";
 import { VertexColors, Object3D, Color } from "three";
 import { useFrame } from "@react-three/fiber";
 import { bubbleSort } from "./sorting/bubbleSort";
+import { selectionSort } from "./sorting/selectionSort";
+import { mergeSort } from "./sorting/mergeSort";
 
 const scratchObject3D = new Object3D();
 const scratchColor = new Color();
@@ -35,17 +37,16 @@ export default function CylinderGroup({ length, swap }) {
 
   useFrame(() => {
     if (!meshRef.current || !positions) return;
-    for (let i = 0; i < 50; i++) {
-      const index = bubbleSort(positions);
-      if (index === false) break;
+    for (let i = 0; i < 1; i++) {
+      // const res = selectionSort(positions);
+      const res = mergeSort(positions);
+      if (res === false) break;
+      const indices = res;
 
-      [positions[index].height, positions[index + 1].height] = [
-        positions[index + 1].height,
-        positions[index].height,
-      ];
-
-      updateVisuals(index);
-      updateVisuals(index + 1);
+      indices.forEach((index) => {
+        updateVisuals(index);
+        updateVisuals(index);
+      });
     }
     colorAttrib.current.needsUpdate = true;
     meshRef.current.instanceMatrix.needsUpdate = true;

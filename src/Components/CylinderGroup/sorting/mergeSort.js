@@ -1,29 +1,45 @@
 let temp;
 let queue = [];
 let done = false;
+let inProgress = false;
+let index;
+let pointerLeft;
+let pointerRight;
+let middleLimit;
+let highLimit;
 
 const merge = (array, low, middle, high) => {
-  temp = array.slice(low, high + 1).map((item) => item.height);
-  let current = low;
-  middle -= low;
-  high -= low;
-  let pointerLeft = 0;
-  let pointerRight = middle + 1;
-
-  while (pointerLeft <= middle && pointerRight <= high) {
-    if (temp[pointerLeft] > temp[pointerRight]) {
-      array[current].height = temp[pointerLeft];
+  if (!inProgress) {
+    temp = array.slice(low, high + 1).map((item) => item.height);
+    index = low;
+    pointerLeft = 0;
+    middleLimit = middle - low;
+    pointerRight = middleLimit + 1;
+    highLimit = high - low;
+    inProgress = true;
+  }
+  while (pointerLeft <= middleLimit && pointerRight <= highLimit) {
+    if (temp[pointerLeft] >= temp[pointerRight]) {
+      array[index].height = temp[pointerLeft];
       pointerLeft++;
+      index++;
+      return [index - 1];
     } else {
-      array[current].height = temp[pointerRight];
+      array[index].height = temp[pointerRight];
       pointerRight++;
+      index++;
+      return [index - 1];
     }
-    current++;
   }
-  for (let i = pointerLeft; i <= middle; i++) {
-    array[current].height = temp[i];
-    current++;
+  for (; pointerLeft <= middleLimit; ) {
+    array[index].height = temp[pointerLeft];
+    index++;
+    pointerLeft++;
+    return [index - 1];
   }
+  inProgress = false;
+  queue.shift();
+  return false;
 };
 
 const mergeSortPrep = (array, low = 0, high = array.length - 1) => {
@@ -36,14 +52,8 @@ const mergeSortPrep = (array, low = 0, high = array.length - 1) => {
 
 const mergeSortStep = (array) => {
   if (!queue.length) return false;
-  const [low, middle, high] = queue.shift();
-  merge(array, low, middle, high);
-  const indices = [];
-
-  for (let i = low; i <= high; i++) {
-    indices.push(i);
-  }
-  return indices;
+  const [low, middle, high] = queue[0];
+  return merge(array, low, middle, high);
 };
 
 export const mergeSort = (array) => {

@@ -37,7 +37,7 @@ export default function CylinderGroup({ length, swap }) {
 
   useFrame(() => {
     if (!meshRef.current || !positions) return;
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 5; i++) {
       // const res = selectionSort(positions);
       const res = mergeSort(positions);
       if (res === false) break;

@@ -3,39 +3,56 @@ let queue = [];
 let done = false;
 let inProgress = false;
 let index;
-let pointerLeft;
-let pointerRight;
+const pointers = {};
 let middleLimit;
 let highLimit;
 
+const updateArray = (array, side) => {
+  const indicesArray = [];
+  indicesArray.push(index);
+  array[index].height = temp[pointers[side]];
+  pointers[side]++;
+  index++;
+
+  let tempIndex = index;
+  let tempPointer = pointers.left;
+
+  while (tempPointer <= middleLimit) {
+    array[tempIndex].height = temp[tempPointer];
+    indicesArray.push(tempIndex);
+    tempPointer++;
+    tempIndex++;
+  }
+
+  tempPointer = pointers.right;
+
+  while (tempPointer <= highLimit) {
+    array[tempIndex].height = temp[tempPointer];
+    indicesArray.push(tempIndex);
+    tempPointer++;
+    tempIndex++;
+  }
+  return indicesArray;
+};
 const merge = (array, low, middle, high) => {
   if (!inProgress) {
     temp = array.slice(low, high + 1).map((item) => item.height);
     index = low;
-    pointerLeft = 0;
+    pointers.left = 0;
     middleLimit = middle - low;
-    pointerRight = middleLimit + 1;
+    pointers.right = middleLimit + 1;
     highLimit = high - low;
     inProgress = true;
   }
-  while (pointerLeft <= middleLimit && pointerRight <= highLimit) {
-    if (temp[pointerLeft] >= temp[pointerRight]) {
-      array[index].height = temp[pointerLeft];
-      pointerLeft++;
-      index++;
-      return [index - 1];
+  while (pointers.left <= middleLimit && pointers.right <= highLimit) {
+    if (temp[pointers.left] >= temp[pointers.right]) {
+      return updateArray(array, "left");
     } else {
-      array[index].height = temp[pointerRight];
-      pointerRight++;
-      index++;
-      return [index - 1];
+      return updateArray(array, "right");
     }
   }
-  for (; pointerLeft <= middleLimit; ) {
-    array[index].height = temp[pointerLeft];
-    index++;
-    pointerLeft++;
-    return [index - 1];
+  while (pointers.left <= middleLimit) {
+    return updateArray(array, "left");
   }
   inProgress = false;
   queue.shift();

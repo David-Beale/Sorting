@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
+import { normalColor } from "./sorting/colors";
 // re-use for instance computations
 const scratchColor = new THREE.Color();
 
@@ -9,7 +10,7 @@ export const useColor = (length) => {
 
   useEffect(() => {
     for (let i = 0; i < length; ++i) {
-      scratchColor.set("rgb(36,102,177)");
+      scratchColor.set(normalColor);
       scratchColor.toArray(colorArray, i * 3);
     }
     colorAttrib.current.needsUpdate = true;

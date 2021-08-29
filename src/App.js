@@ -2,16 +2,11 @@ import "./App.css";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stats, Loader } from "@react-three/drei";
 import CylinderGroup from "./Components/CylinderGroup/CylinderGroup";
-import { useState } from "react";
 
-const length = 1000;
+const length = 500;
 export default function App() {
-  const [swap, setSwap] = useState(false);
-  const onClick = () => {
-    // setSwap([true]);
-  };
   return (
-    <div className="container" onPointerDown={onClick}>
+    <div className="container">
       <Canvas
         camera={{
           // position: [0, length / 10, length / 3],
@@ -24,7 +19,7 @@ export default function App() {
         <ambientLight intensity={0.5} />
         <directionalLight intensity={0.5} position={[0, 20, 20]} />
         <directionalLight intensity={0.5} position={[20, 20, 0]} />
-        <CylinderGroup length={length} swap={swap} />
+        <CylinderGroup length={length} />
         <OrbitControls />
       </Canvas>
       <Loader />

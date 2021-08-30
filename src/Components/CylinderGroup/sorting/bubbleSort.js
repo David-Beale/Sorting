@@ -1,33 +1,46 @@
-let counter = 1;
+import { correctHeightColor, normalColor, currentColor } from "./colors";
 let i = 0;
+let swapped = false;
 let finished = false;
-let swapped;
+let counter = 1;
+
+const swap = (array, i1, i2) => {
+  [array[i1].height, array[i2].height] = [array[i2].height, array[i1].height];
+  swapped = true;
+};
 
 export const bubbleSort = (array, start) => {
-  if (start) {
-    counter = 1;
-    i = 0;
-    finished = false;
-  }
   if (finished) return false;
+  if (start) {
+    i = 0;
+    swapped = false;
+    finished = false;
+    counter = 1;
+  }
 
-  do {
-    if (i === 0) swapped = false;
-    for (; i < array.length - counter; i++) {
+  while (true) {
+    while (i < array.length - counter) {
       if (array[i].height < array[i + 1].height) {
-        [array[i].height, array[i + 1].height] = [
-          array[i + 1].height,
-          array[i].height,
-        ];
-        const indices = [i, i + 1];
-        i++;
-        swapped = true;
-        return indices;
+        swap(array, i, i + 1);
       }
+      const res = [i, i + 1];
+      array[i].color =
+        array[i].height === array[i].correctHeight
+          ? correctHeightColor
+          : normalColor;
+      array[i + 1].color =
+        array[i + 1].height === array[i + 1].correctHeight
+          ? correctHeightColor
+          : currentColor;
+      i++;
+      return res;
+    }
+    if (!swapped) {
+      finished = true;
+      return false;
     }
     i = 0;
+    swapped = false;
     counter++;
-  } while (swapped);
-  finished = true;
-  return false;
+  }
 };

@@ -3,7 +3,7 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stats, Loader } from "@react-three/drei";
 import CylinderGroup from "./Components/CylinderGroup/CylinderGroup";
 
-const length = 500;
+const length = 100;
 export default function App() {
   return (
     <div className="container">

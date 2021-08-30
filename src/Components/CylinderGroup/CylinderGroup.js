@@ -7,10 +7,10 @@ import { bubbleSort } from "./sorting/bubbleSort";
 import { selectionSort } from "./sorting/selectionSort";
 import { mergeSort } from "./sorting/mergeSort";
 import { normalColor } from "./sorting/colors";
+import { quickSort } from "./sorting/quickSort";
 
 const scratchObject3D = new Object3D();
 const scratchColor = new Color();
-
 export default function CylinderGroup({ length }) {
   const { meshRef, positions } = useData(length);
   const { colorAttrib, colorArray } = useColor(length);
@@ -25,10 +25,7 @@ export default function CylinderGroup({ length }) {
       scratchObject3D.scale.set(1, positions[index].height, 1);
       scratchObject3D.updateMatrix();
       meshRef.current.setMatrixAt(index, scratchObject3D.matrix);
-      // const color =
-      //   positions[index].height === positions[index].correctHeight
-      //     ? "rgb(43,191,48)"
-      //     : "rgb(36,102,177)";
+
       scratchColor.set(positions[index].color);
       scratchColor.toArray(colorArray, index * 3);
     },
@@ -38,10 +35,11 @@ export default function CylinderGroup({ length }) {
   useFrame(() => {
     if (!meshRef.current || !positions) return;
     const indices = new Set();
-    for (let i = 0; i < 1; i++) {
+    for (let i = 0; i < 5; i++) {
       // const res = selectionSort(positions);
-      const res = mergeSort(positions);
+      // const res = mergeSort(positions);
       // const res = bubbleSort(positions);
+      const res = quickSort(positions);
       if (res === false) break;
       res.forEach((index) => indices.add(index));
     }

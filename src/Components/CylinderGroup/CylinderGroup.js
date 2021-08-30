@@ -40,8 +40,8 @@ export default function CylinderGroup({ length }) {
     const indices = new Set();
     for (let i = 0; i < 1; i++) {
       // const res = selectionSort(positions);
-      // const res = mergeSort(positions);
-      const res = bubbleSort(positions);
+      const res = mergeSort(positions);
+      // const res = bubbleSort(positions);
       if (res === false) break;
       res.forEach((index) => indices.add(index));
     }

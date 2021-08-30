@@ -1,8 +1,10 @@
+import { correctHeightColor, normalColor, currentColor } from "./colors";
 let temp;
 let queue = [];
-let done = false;
+let prepDone = false;
 let inProgress = false;
 let index;
+let prevIndex = null;
 const pointers = {};
 let middleLimit;
 let highLimit;
@@ -11,6 +13,18 @@ const updateArray = (array, side) => {
   const indicesArray = [];
   indicesArray.push(index);
   array[index].height = temp[pointers[side]];
+  array[index].color =
+    array[index].height === array[index].correctHeight
+      ? correctHeightColor
+      : currentColor;
+  if (prevIndex !== null) {
+    array[prevIndex].color =
+      array[prevIndex].height === array[prevIndex].correctHeight
+        ? correctHeightColor
+        : normalColor;
+    indicesArray.push(prevIndex);
+  }
+  prevIndex = index;
   pointers[side]++;
   index++;
 
@@ -67,16 +81,12 @@ const mergeSortPrep = (array, low = 0, high = array.length - 1) => {
   queue.push([low, middle, high]);
 };
 
-const mergeSortStep = (array) => {
+export const mergeSort = (array) => {
+  if (!prepDone) {
+    mergeSortPrep(array);
+    prepDone = true;
+  }
   if (!queue.length) return false;
   const [low, middle, high] = queue[0];
   return merge(array, low, middle, high);
-};
-
-export const mergeSort = (array) => {
-  if (!done) {
-    mergeSortPrep(array);
-    done = true;
-  }
-  return mergeSortStep(array);
 };

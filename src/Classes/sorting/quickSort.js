@@ -1,109 +1,92 @@
-import { correctHeightColor, normalColor, currentColor } from "../colors";
-let stack = [];
-let prepDone = false;
-let inProgress = false;
-let pivot;
-let leftPointer;
-let rightPointer;
-let left;
-let right;
-
-const partition = (array) => {
-  if (!inProgress) {
-    inProgress = true;
-    [left, right] = stack.pop();
-    pivot = array[Math.floor((left + right) / 2)].height;
-    leftPointer = left;
-    rightPointer = right;
+export default class QuickSort {
+  constructor(array) {
+    this.array = array;
+    this.stack = [[0, array.length - 1]];
+    this.inProgress = false;
+    this.pivot = null;
+    this.leftPointer = null;
+    this.rightPointer = null;
+    this.left = null;
+    this.right = null;
+    this.indices = [];
   }
-  while (leftPointer <= rightPointer) {
-    //move pointers closer together until a swap can be made
-    while (
-      array[leftPointer].height > pivot ||
-      array[rightPointer].height < pivot
-    ) {
-      const res = [];
-      if (array[leftPointer].height > pivot) {
-        //reset prev color
-        array[leftPointer].color =
-          array[leftPointer].height === array[leftPointer].correctHeight
-            ? correctHeightColor
-            : normalColor;
-        res.push(leftPointer);
-        leftPointer++;
-      }
-      if (leftPointer <= rightPointer) {
-        //set current color
-        array[leftPointer].color = currentColor;
-        res.push(leftPointer);
-      }
 
-      if (array[rightPointer].height < pivot) {
-        //reset prev color
-        array[rightPointer].color =
-          array[rightPointer].height === array[rightPointer].correctHeight
-            ? correctHeightColor
-            : normalColor;
-        res.push(rightPointer);
-        rightPointer--;
-      }
-      if (leftPointer <= rightPointer) {
-        //set current color
-        array[rightPointer].color = currentColor;
-        res.push(rightPointer);
-      }
-      return res;
+  newPartition() {
+    this.inProgress = true;
+    [this.left, this.right] = this.stack.pop();
+    this.pivot = this.array[Math.floor((this.left + this.right) / 2)].height;
+    this.leftPointer = this.left;
+    this.rightPointer = this.right;
+  }
+
+  shiftLeftPointer() {
+    //reset prev color
+    this.array[this.leftPointer].setColorNormalOrCorrect();
+    this.indices.push(this.leftPointer);
+    this.leftPointer++;
+  }
+  shiftRightPointer() {
+    //reset prev color
+    this.array[this.rightPointer].setColorNormalOrCorrect();
+    this.indices.push(this.rightPointer);
+    this.rightPointer--;
+  }
+  setCurrentColors() {
+    if (this.leftPointer > this.rightPointer) return;
+    this.array[this.leftPointer].setColorCurrent();
+    this.array[this.rightPointer].setColorCurrent();
+    this.indices.push(this.leftPointer, this.rightPointer);
+  }
+
+  partition() {
+    if (!this.inProgress) {
+      this.newPartition();
     }
+    while (this.leftPointer <= this.rightPointer) {
+      const leftNeedsToShift = this.array[this.leftPointer].height > this.pivot;
+      const rightNeedsToShift =
+        this.array[this.rightPointer].height < this.pivot;
 
-    const res = [leftPointer, rightPointer];
-    //make swap
-    [array[leftPointer].height, array[rightPointer].height] = [
-      array[rightPointer].height,
-      array[leftPointer].height,
-    ];
-    //reset colors
-    array[leftPointer].color =
-      array[leftPointer].height === array[leftPointer].correctHeight
-        ? correctHeightColor
-        : normalColor;
+      //move pointers closer together until a swap can be made
+      while (leftNeedsToShift || rightNeedsToShift) {
+        if (leftNeedsToShift) this.shiftLeftPointer();
 
-    array[rightPointer].color =
-      array[rightPointer].height === array[rightPointer].correctHeight
-        ? correctHeightColor
-        : normalColor;
+        if (rightNeedsToShift) this.shiftRightPointer();
 
-    leftPointer++;
-    rightPointer--;
-    if (leftPointer <= rightPointer) {
-      //set current colors
-      array[leftPointer].color = currentColor;
+        this.setCurrentColors();
+        return;
+      }
 
-      array[rightPointer].color = currentColor;
+      //make swap
+      this.array[this.leftPointer].swap(this.array[this.rightPointer]);
+      this.indices.push(this.leftPointer, this.rightPointer);
 
-      res.push(leftPointer, rightPointer);
+      //reset colors
+      this.array[this.leftPointer].setColorNormalOrCorrect();
+      this.array[this.rightPointer].setColorNormalOrCorrect();
+
+      this.leftPointer++;
+      this.rightPointer--;
+
+      this.setCurrentColors();
+      return;
     }
-
-    return res;
   }
-  return leftPointer;
-};
-const quickSortPrep = (array) => {
-  stack.push([0, array.length - 1]);
-};
 
-export const quickSort = (array) => {
-  if (!prepDone) {
-    quickSortPrep(array);
-    prepDone = true;
-  }
-  while (inProgress || stack.length) {
-    const res = partition(array);
-    if (typeof res === "object") {
-      return res;
+  sort() {
+    while (this.inProgress || this.stack.length) {
+      this.indices = [];
+      this.partition();
+      if (this.indices.length) return this.indices;
+
+      this.inProgress = false;
+      if (this.left < this.leftPointer - 1) {
+        this.stack.push([this.left, this.leftPointer - 1]);
+      }
+      if (this.right > this.leftPointer) {
+        this.stack.push([this.leftPointer, this.right]);
+      }
     }
-    inProgress = false;
-    if (left < res - 1) stack.push([left, res - 1]);
-    if (right > res) stack.push([res, right]);
+    return false;
   }
-  return false;
-};
+}

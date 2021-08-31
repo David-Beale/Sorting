@@ -1,10 +1,10 @@
 import SortableItem from "./SortableItem";
 import { spiralLayout } from "./layouts";
 import { Object3D, Color } from "three";
-import BubbleSort from "./sorting/bubbleSort";
 import SelectionSort from "./sorting/selectionSort";
+import BubbleSort from "./sorting/bubbleSort";
+import QuickSort from "./sorting/quickSort";
 // import { mergeSort } from "./sorting/mergeSort";
-// import { quickSort } from "./sorting/quickSort";
 import RadixSort from "./sorting/radixSort";
 
 const scratchObject3D = new Object3D();
@@ -22,8 +22,8 @@ export default class SortableList {
     this.layout = spiralLayout;
     this.generateLayout();
     // this.sortingClass = new RadixSort(this.array);
-    this.sortingClass = new BubbleSort(this.array);
-    this.speed = 300;
+    this.sortingClass = new QuickSort(this.array);
+    this.speed = 1;
   }
 
   initArray() {

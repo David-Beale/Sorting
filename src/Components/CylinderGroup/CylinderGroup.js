@@ -28,7 +28,7 @@ export default function CylinderGroup({ length }) {
         ref={meshRef}
         args={[null, null, length]}
         frustumCulled={false}
-        position={[0, -length / 35, 0]}
+        position={[0, -25, 0]}
       >
         <cylinderBufferGeometry args={[1, 1, 1, 16]}>
           <instancedBufferAttribute

@@ -21,9 +21,8 @@ export default class SortableList {
     this.shuffle();
     this.layout = spiralLayout;
     this.generateLayout();
-    // this.sortingClass = new RadixSort(this.array);
-    this.sortingClass = new MergeSort(this.array);
-    this.speed = 1;
+    this.sortingClass = new BubbleSort(this.array);
+    this.speed = 100;
   }
 
   initArray() {

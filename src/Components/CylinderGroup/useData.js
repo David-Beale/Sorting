@@ -13,7 +13,7 @@ export const useData = (length, swap) => {
   const heights = useMemo(() => {
     const list = [];
     for (let i = length; i >= 1; i--) {
-      list.push(i);
+      list.push(i / 10);
     }
     return list;
   }, [length]);
@@ -23,8 +23,8 @@ export const useData = (length, swap) => {
     const shuffled = shuffle(heights);
     // const shuffled = heights;
     for (let i = 0; i < positions.length; i++) {
-      const height = shuffled[i] / 10;
-      const correctHeight = heights[i] / 10;
+      const height = shuffled[i];
+      const correctHeight = heights[i];
       positions[i].y = height / 2;
       positions[i].height = height;
       positions[i].correctHeight = correctHeight;

@@ -1,46 +1,38 @@
-import { correctHeightColor, normalColor, currentColor } from "../colors";
-let i = 0;
-let swapped = false;
-let finished = false;
-let counter = 1;
-
-const swap = (array, i1, i2) => {
-  [array[i1].height, array[i2].height] = [array[i2].height, array[i1].height];
-  swapped = true;
-};
-
-export const bubbleSort = (array, start) => {
-  if (finished) return false;
-  if (start) {
-    i = 0;
-    swapped = false;
-    finished = false;
-    counter = 1;
+export default class BubbleSort {
+  constructor(array) {
+    this.array = array;
+    this.i = 0;
+    this.swapped = false;
+    this.finished = false;
+    this.end = array.length - 1;
   }
 
-  while (true) {
-    while (i < array.length - counter) {
-      if (array[i].height < array[i + 1].height) {
-        swap(array, i, i + 1);
+  nextLoop() {
+    this.i = 0;
+    this.swapped = false;
+    this.end--;
+  }
+  sort() {
+    if (this.finished) return false;
+
+    while (true) {
+      while (this.i < this.end) {
+        if (this.array[this.i].height < this.array[this.i + 1].height) {
+          this.swapped = true;
+          this.array[this.i].swap(this.array[this.i + 1]);
+        }
+        const indices = [this.i, this.i + 1];
+        this.array[this.i].setColorNormalOrCorrect();
+        this.array[this.i + 1].setColorCurrentOrCorrect();
+
+        this.i++;
+        return indices;
       }
-      const res = [i, i + 1];
-      array[i].color =
-        array[i].height === array[i].correctHeight
-          ? correctHeightColor
-          : normalColor;
-      array[i + 1].color =
-        array[i + 1].height === array[i + 1].correctHeight
-          ? correctHeightColor
-          : currentColor;
-      i++;
-      return res;
+      if (!this.swapped) {
+        this.finished = true;
+        return false;
+      }
+      this.nextLoop();
     }
-    if (!swapped) {
-      finished = true;
-      return false;
-    }
-    i = 0;
-    swapped = false;
-    counter++;
   }
-};
+}

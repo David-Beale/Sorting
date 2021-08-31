@@ -1,55 +1,25 @@
-import React, { useCallback } from "react";
-import { useColor } from "./useColor";
-import { useData } from "./useData";
-import { VertexColors, Object3D, Color } from "three";
+import React, { useEffect, useMemo, useRef } from "react";
+import SortableList from "../../Classes/SortableList";
+import { VertexColors } from "three";
 import { useFrame } from "@react-three/fiber";
-import { bubbleSort } from "./sorting/bubbleSort";
-import { selectionSort } from "./sorting/selectionSort";
-import { mergeSort } from "./sorting/mergeSort";
-import { normalColor } from "./sorting/colors";
-import { quickSort } from "./sorting/quickSort";
-import { radixSort } from "./sorting/radixSort";
 
-const scratchObject3D = new Object3D();
-const scratchColor = new Color();
 export default function CylinderGroup({ length }) {
-  const { meshRef, positions } = useData(length);
-  const { colorAttrib, colorArray } = useColor(length);
+  const meshRef = useRef();
+  const colorRef = useRef();
+  const colorArray = useMemo(() => new Float32Array(length * 3), [length]);
 
-  const updateVisuals = useCallback(
-    (index) => {
-      scratchObject3D.position.set(
-        positions[index].x,
-        positions[index].height / 2,
-        positions[index].z
-      );
-      scratchObject3D.scale.set(1, positions[index].height, 1);
-      scratchObject3D.updateMatrix();
-      meshRef.current.setMatrixAt(index, scratchObject3D.matrix);
-
-      scratchColor.set(positions[index].color);
-      scratchColor.toArray(colorArray, index * 3);
-    },
-    [colorArray, meshRef, positions]
+  const sortableList = useMemo(
+    () => new SortableList(length, meshRef, colorRef, colorArray),
+    [length, colorArray]
   );
 
+  useEffect(() => {
+    if (!meshRef.current) return;
+    sortableList.updateAll();
+  }, [sortableList]);
+
   useFrame(() => {
-    if (!meshRef.current || !positions) return;
-    const indices = new Set();
-    for (let i = 0; i < 1; i++) {
-      // const res = selectionSort(positions);
-      // const res = bubbleSort(positions);
-      // const res = mergeSort(positions);
-      // const res = quickSort(positions);
-      const res = radixSort(positions);
-      if (res === false) break;
-      res.forEach((index) => indices.add(index));
-    }
-    indices.forEach((index) => {
-      updateVisuals(index);
-    });
-    colorAttrib.current.needsUpdate = true;
-    meshRef.current.instanceMatrix.needsUpdate = true;
+    sortableList.sort();
   });
 
   return (
@@ -62,7 +32,7 @@ export default function CylinderGroup({ length }) {
       >
         <cylinderBufferGeometry args={[1, 1, 1, 16]}>
           <instancedBufferAttribute
-            ref={colorAttrib}
+            ref={colorRef}
             attachObject={["attributes", "color"]}
             args={[colorArray, 3]}
           />

@@ -1,4 +1,4 @@
-import { correctHeightColor, normalColor, currentColor } from "./colors";
+import { correctHeightColor, normalColor, currentColor } from "../colors";
 let i = 0;
 let swapped = false;
 let finished = false;

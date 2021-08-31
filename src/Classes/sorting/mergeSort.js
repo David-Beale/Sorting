@@ -1,4 +1,4 @@
-import { correctHeightColor, normalColor, currentColor } from "./colors";
+import { correctHeightColor, normalColor, currentColor } from "../colors";
 let temp;
 let queue = [];
 let prepDone = false;

@@ -1,4 +1,4 @@
-import { correctHeightColor, normalColor, currentColor } from "./colors";
+import { correctHeightColor, normalColor, currentColor } from "../colors";
 let stack = [];
 let prepDone = false;
 let inProgress = false;

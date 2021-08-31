@@ -1,4 +1,4 @@
-import { correctHeightColor, normalColor, currentColor } from "./colors";
+import { correctHeightColor, normalColor, currentColor } from "../colors";
 let i = 0;
 let j = i + 1;
 let max = i;

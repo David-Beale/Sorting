@@ -9,6 +9,7 @@ export default class MergeSort {
     this.middleLimit = null;
     this.highLimit = null;
     this.indices = null;
+    this.inProgress = false;
     this.mergeSortPrep();
   }
 
@@ -30,6 +31,7 @@ export default class MergeSort {
     if (this.prevIndex !== null) {
       this.indices.push(this.prevIndex);
       const prevItem = this.array[this.prevIndex];
+
       prevItem.setColorNormalOrCorrect();
     }
     this.prevIndex = this.currentIndex;
@@ -72,8 +74,6 @@ export default class MergeSort {
   }
 
   nextLoop() {
-    this.queue.shift();
-    if (!this.queue.length) return;
     const [low, middle, high] = this.queue[0];
 
     this.temp = this.array.slice(low, high + 1).map((item) => item.height);
@@ -84,9 +84,13 @@ export default class MergeSort {
 
     this.pointers.right = this.middleLimit + 1;
     this.highLimit = high - low;
+    this.inProgress = true;
   }
   sort() {
     if (!this.queue.length) return false;
+
+    if (!this.inProgress) this.nextLoop();
+
     while (
       this.pointers.left <= this.middleLimit &&
       this.pointers.right <= this.highLimit
@@ -100,7 +104,13 @@ export default class MergeSort {
     while (this.pointers.left <= this.middleLimit) {
       return this.updateArray("left");
     }
-    this.nextLoop();
+    //not required for sorting, but ensures colors are set correctly:
+    while (this.pointers.right <= this.highLimit) {
+      return this.updateArray("right");
+    }
+
+    this.inProgress = false;
+    this.queue.shift();
     return this.sort();
   }
 }

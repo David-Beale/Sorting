@@ -1,92 +1,106 @@
-import { correctHeightColor, normalColor, currentColor } from "../colors";
-let temp;
-let queue = [];
-let prepDone = false;
-let inProgress = false;
-let index;
-let prevIndex = null;
-const pointers = {};
-let middleLimit;
-let highLimit;
-
-const updateArray = (array, side) => {
-  const indicesArray = [];
-  indicesArray.push(index);
-  array[index].height = temp[pointers[side]];
-  array[index].color =
-    array[index].height === array[index].correctHeight
-      ? correctHeightColor
-      : currentColor;
-  if (prevIndex !== null) {
-    array[prevIndex].color =
-      array[prevIndex].height === array[prevIndex].correctHeight
-        ? correctHeightColor
-        : normalColor;
-    indicesArray.push(prevIndex);
-  }
-  prevIndex = index;
-  pointers[side]++;
-  index++;
-
-  let tempIndex = index;
-  let tempPointer = pointers.left;
-
-  while (tempPointer <= middleLimit) {
-    array[tempIndex].height = temp[tempPointer];
-    indicesArray.push(tempIndex);
-    tempPointer++;
-    tempIndex++;
+export default class MergeSort {
+  constructor(array) {
+    this.array = array;
+    this.temp = null;
+    this.queue = [];
+    this.currentIndex = null;
+    this.prevIndex = null;
+    this.pointers = {};
+    this.middleLimit = null;
+    this.highLimit = null;
+    this.indices = null;
+    this.mergeSortPrep();
   }
 
-  tempPointer = pointers.right;
+  mergeSortPrep(low = 0, high = this.array.length - 1) {
+    if (high - low === 0) return;
+    const middle = Math.floor((low + high) / 2);
+    this.mergeSortPrep(low, middle);
+    this.mergeSortPrep(middle + 1, high);
+    this.queue.push([low, middle, high]);
+  }
 
-  while (tempPointer <= highLimit) {
-    array[tempIndex].height = temp[tempPointer];
-    indicesArray.push(tempIndex);
-    tempPointer++;
-    tempIndex++;
+  updateCurrentIndex(side) {
+    this.indices.push(this.currentIndex);
+    const currentItem = this.array[this.currentIndex];
+    currentItem.setHeight(this.temp[this.pointers[side]]);
+    currentItem.setColorCurrentOrCorrect();
   }
-  return indicesArray;
-};
-const merge = (array, low, middle, high) => {
-  if (!inProgress) {
-    temp = array.slice(low, high + 1).map((item) => item.height);
-    index = low;
-    pointers.left = 0;
-    middleLimit = middle - low;
-    pointers.right = middleLimit + 1;
-    highLimit = high - low;
-    inProgress = true;
+  updatePrevIndex() {
+    if (this.prevIndex !== null) {
+      this.indices.push(this.prevIndex);
+      const prevItem = this.array[this.prevIndex];
+      prevItem.setColorNormalOrCorrect();
+    }
+    this.prevIndex = this.currentIndex;
   }
-  while (pointers.left <= middleLimit && pointers.right <= highLimit) {
-    if (temp[pointers.left] >= temp[pointers.right]) {
-      return updateArray(array, "left");
-    } else {
-      return updateArray(array, "right");
+
+  getShiftedIndices() {
+    let tempIndex = this.currentIndex;
+    let tempPointer = this.pointers.left;
+
+    while (tempPointer <= this.middleLimit) {
+      this.indices.push(tempIndex);
+      const item = this.array[tempIndex];
+      item.setHeight(this.temp[tempPointer]);
+      tempPointer++;
+      tempIndex++;
+    }
+
+    tempPointer = this.pointers.right;
+
+    while (tempPointer <= this.highLimit) {
+      this.indices.push(tempIndex);
+      const item = this.array[tempIndex];
+      item.setHeight(this.temp[tempPointer]);
+      tempPointer++;
+      tempIndex++;
     }
   }
-  while (pointers.left <= middleLimit) {
-    return updateArray(array, "left");
-  }
-  inProgress = false;
-  queue.shift();
-  return false;
-};
 
-const mergeSortPrep = (array, low = 0, high = array.length - 1) => {
-  if (high - low === 0) return;
-  const middle = Math.floor((low + high) / 2);
-  mergeSortPrep(array, low, middle);
-  mergeSortPrep(array, middle + 1, high);
-  queue.push([low, middle, high]);
-};
+  updateArray(side) {
+    this.indices = [];
 
-export const mergeSort = (array) => {
-  if (!prepDone) {
-    mergeSortPrep(array);
-    prepDone = true;
+    this.updateCurrentIndex(side);
+    this.updatePrevIndex();
+
+    this.pointers[side]++;
+    this.currentIndex++;
+
+    this.getShiftedIndices();
+    return this.indices;
   }
-  if (!queue.length) return false;
-  const [low, middle, high] = queue[0];
-  return merge(array, low, middle, high);
-};
+
+  nextLoop() {
+    this.queue.shift();
+    if (!this.queue.length) return;
+    const [low, middle, high] = this.queue[0];
+
+    this.temp = this.array.slice(low, high + 1).map((item) => item.height);
+    this.currentIndex = low;
+
+    this.pointers.left = 0;
+    this.middleLimit = middle - low;
+
+    this.pointers.right = this.middleLimit + 1;
+    this.highLimit = high - low;
+  }
+  sort() {
+    if (!this.queue.length) return false;
+    while (
+      this.pointers.left <= this.middleLimit &&
+      this.pointers.right <= this.highLimit
+    ) {
+      if (this.temp[this.pointers.left] >= this.temp[this.pointers.right]) {
+        return this.updateArray("left");
+      } else {
+        return this.updateArray("right");
+      }
+    }
+    while (this.pointers.left <= this.middleLimit) {
+      return this.updateArray("left");
+    }
+    this.nextLoop();
+    return this.sort();
+  }
+}

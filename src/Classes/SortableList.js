@@ -4,7 +4,7 @@ import { Object3D, Color } from "three";
 import SelectionSort from "./sorting/selectionSort";
 import BubbleSort from "./sorting/bubbleSort";
 import QuickSort from "./sorting/quickSort";
-// import { mergeSort } from "./sorting/mergeSort";
+import MergeSort from "./sorting/mergeSort";
 import RadixSort from "./sorting/radixSort";
 
 const scratchObject3D = new Object3D();
@@ -22,7 +22,7 @@ export default class SortableList {
     this.layout = spiralLayout;
     this.generateLayout();
     // this.sortingClass = new RadixSort(this.array);
-    this.sortingClass = new QuickSort(this.array);
+    this.sortingClass = new MergeSort(this.array);
     this.speed = 1;
   }
 

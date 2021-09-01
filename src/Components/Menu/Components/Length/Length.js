@@ -17,16 +17,20 @@ export default function SpeedSlider({ length, setLength }) {
   const onChange = (e) => {
     const regex = /[^0-9,]/gi;
     const newValue = e.target.value;
-    if (regex.test(newValue)) return;
-    const unFormatted = newValue.replace(/,/gi, "");
-    if (+unFormatted > 10000) return;
+    if (newValue && regex.test(newValue)) return;
+    let unFormatted = newValue.replace(/,/gi, "");
     setLocalLength(formatNumber(unFormatted));
   };
-
   const onSubmit = (e) => {
     e.preventDefault();
-    const unFormatted = localLength.replace(/,/gi, "");
+    let unFormatted = localLength.replace(/,/gi, "");
+    if (+unFormatted > 10000) {
+      unFormatted = "10000";
+    } else if (!unFormatted || +unFormatted < 10) {
+      unFormatted = "10";
+    }
     setLength(+unFormatted);
+    setLocalLength(formatNumber(unFormatted));
   };
 
   return (

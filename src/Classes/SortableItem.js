@@ -6,10 +6,23 @@ export default class SortableItem {
   constructor() {
     this.height = null;
     this.color = normalColor;
+    this.tempHeight = null;
+    this.sourceHeight = null;
   }
   setCorrectHeight(height) {
     this.correctHeight = height;
     this.height = height;
+  }
+  setSourceHeight() {
+    this.sourceHeight = this.height;
+  }
+  setTempHeight(height) {
+    this.tempHeight = height;
+    this.y = height / 2;
+  }
+  deleteTempHeight() {
+    this.tempHeight = null;
+    this.sourceHeight = null;
   }
   setHeight(height) {
     this.height = height;

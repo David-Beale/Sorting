@@ -21,11 +21,6 @@ export default function CylinderGroup({ length, sortMethod, speed }) {
     sortableList.updateSortMethod(sortMethod);
   }, [sortableList, sortMethod]);
 
-  useEffect(() => {
-    if (!meshRef.current) return;
-    sortableList.updateAll();
-  }, [sortableList]);
-
   useFrame(() => {
     sortableList.sort();
   });

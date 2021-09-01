@@ -1,6 +1,7 @@
 export default class RadixSort {
-  constructor(array) {
+  constructor(array, width) {
     this.array = array;
+    this.scale = this.array.length / width;
     this.buckets = [];
     this.maxLength = array.length.toString().length;
     this.i = 0;
@@ -20,8 +21,9 @@ export default class RadixSort {
 
   getDigit() {
     const num = this.array[this.j].height;
+    const integer = Math.round(num * this.scale);
     const index = this.i;
-    const string = (num * 10).toString();
+    const string = integer.toString();
     const digit = string[string.length - 1 - index];
     return digit === undefined ? 0 : digit;
   }
@@ -113,7 +115,6 @@ export default class RadixSort {
     if (this.prevIndex) {
       return this.updateFinalItem();
     }
-
     return false;
   }
 }

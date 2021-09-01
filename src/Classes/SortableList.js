@@ -25,20 +25,21 @@ export default class SortableList {
     this.colorArray = colorArray;
     this.length = length;
     this.array = this.initArray();
-    this.shuffle();
     this.layout = spiralLayout;
     this.generateLayout();
+    this.setHeights();
+    this.shuffle();
     this.sortFunction = null;
     this.speed = null;
     this.animateProgress = 0;
     this.animating = false;
+    this.widht = null;
   }
 
   initArray() {
     const array = [];
-    for (let i = this.length; i >= 1; i--) {
+    for (let i = 0; i < this.length; i++) {
       const newItem = new SortableItem();
-      newItem.setCorrectHeight(i / 10);
       array.push(newItem);
     }
     return array;
@@ -63,12 +64,27 @@ export default class SortableList {
   generateLayout() {
     this.layout(this.array);
   }
+  setHeights() {
+    let minX = Infinity;
+    let maxX = -Infinity;
+    for (let i = 0; i < this.array.length; i++) {
+      const item = this.array[i];
+      if (item.x < minX) minX = item.x;
+      if (item.x > maxX) maxX = item.x;
+    }
+    this.width = maxX - minX;
+    for (let i = 0; i < this.array.length; i++) {
+      const item = this.array[i];
+      const height = (this.width * (this.array.length - i)) / this.array.length;
+      item.setCorrectHeight(height);
+    }
+  }
   setSpeed(speed) {
     this.speed = speed;
   }
   updateSortMethod(sortMethod) {
     const SortingClass = sortingClasses[sortMethod];
-    this.sortFunction = new SortingClass(this.array);
+    this.sortFunction = new SortingClass(this.array, this.width);
     this.shuffle();
     this.resetColors();
     if (!this.ready) {

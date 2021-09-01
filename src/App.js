@@ -10,7 +10,7 @@ export default function App() {
   const [length, setLength] = useState(500);
   const [sortMethod, setSortMethod] = useState(["Selection"]);
   const [speed, setSpeed] = useState(1);
-  const [cameraLock, setCameraLock] = useState(false);
+  const [cameraLock, setCameraLock] = useState(true);
   const mouse = useRef([0, 0]);
 
   const onMouseMove = (e) => {

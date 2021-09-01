@@ -51,6 +51,7 @@ export default class SortableList {
       this.array[i].swap(this.array[randomIndex]);
       this.array[i].setColorNormal();
     }
+    this.array[this.array.length - 1].setColorNormal();
   }
   generateLayout() {
     this.layout(this.array);

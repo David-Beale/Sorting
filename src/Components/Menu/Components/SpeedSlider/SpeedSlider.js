@@ -9,10 +9,10 @@ export default function SpeedSlider({ speed, length, setSpeed }) {
   useEffect(() => {
     if (prevLen.current === length) return;
     setSpeed((prevSpeed) => {
-      Math.round((prevSpeed / prevLen.current) * length);
+      return Math.round((prevSpeed / prevLen.current) * length);
     });
     setLocalSliderValue((prevSpeed) => {
-      Math.round((prevSpeed / prevLen.current) * length);
+      return Math.round((prevSpeed / prevLen.current) * length);
     });
     prevLen.current = length;
   }, [length, setSpeed]);

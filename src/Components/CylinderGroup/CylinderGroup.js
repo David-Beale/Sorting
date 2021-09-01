@@ -18,7 +18,7 @@ export default function CylinderGroup({ length, sortMethod, speed }) {
   }, [sortableList, speed]);
 
   useEffect(() => {
-    sortableList.updateSortMethod(sortMethod);
+    sortableList.updateSortMethod(sortMethod[0]);
   }, [sortableList, sortMethod]);
 
   useFrame(() => {

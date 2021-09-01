@@ -6,9 +6,9 @@ import CylinderGroup from "./Components/CylinderGroup/CylinderGroup";
 import Rig from "./Components/Rig/Rig";
 import Menu from "./Components/Menu/Menu";
 
-const length = 500;
 export default function App() {
-  const [sortMethod, setSortMethod] = useState("Selection");
+  const [length, setLength] = useState(500);
+  const [sortMethod, setSortMethod] = useState(["Selection"]);
   const [speed, setSpeed] = useState(1);
   const [cameraLock, setCameraLock] = useState(false);
   const mouse = useRef([0, 0]);
@@ -30,6 +30,7 @@ export default function App() {
         speed={speed}
         setSpeed={setSpeed}
         length={length}
+        setLength={setLength}
       />
       <Canvas
         camera={{

@@ -29,7 +29,7 @@ export default class SortableList {
     this.layout = spiralLayout;
     this.generateLayout();
     this.sortFunction = null;
-    this.speed = 100;
+    this.speed = null;
     this.animateProgress = 0;
     this.animating = false;
   }

@@ -5,12 +5,14 @@ import { OrbitControls, Stats, Loader, Sky } from "@react-three/drei";
 import CylinderGroup from "./Components/CylinderGroup/CylinderGroup";
 import Rig from "./Components/Rig/Rig";
 import Menu from "./Components/Menu/Menu";
+import Controls from "./Components/CameraAnimation/Controls";
 
 export default function App() {
   const [length, setLength] = useState(500);
   const [sortMethod, setSortMethod] = useState(["Selection"]);
   const [speed, setSpeed] = useState(1);
   const [cameraLock, setCameraLock] = useState(true);
+  const [height, setHeight] = useState(0);
   const mouse = useRef([0, 0]);
 
   const onMouseMove = (e) => {
@@ -44,8 +46,15 @@ export default function App() {
         <directionalLight intensity={0.5} position={[0, 20, 20]} />
         <directionalLight intensity={0.5} position={[20, 20, 0]} />
         <Sky distance={10000} inclination={1} azimuth={0.6} rayleigh={0.1} />
-        <CylinderGroup length={length} sortMethod={sortMethod} speed={speed} />
-        {cameraLock ? <OrbitControls /> : <Rig mouse={mouse} />}
+        <CylinderGroup
+          length={length}
+          sortMethod={sortMethod}
+          speed={speed}
+          height={height}
+          setHeight={setHeight}
+        />
+        {!cameraLock && <Rig mouse={mouse} height={height} />}
+        <Controls height={height} cameraLock={cameraLock} />
       </Canvas>
       <Loader />
     </div>

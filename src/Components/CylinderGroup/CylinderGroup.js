@@ -1,16 +1,18 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import SortableList from "../../Classes/SortableList";
 import { VertexColors } from "three";
 import { useFrame } from "@react-three/fiber";
-import useCameraAnimation from "../CameraAnimation/useCameraAnimation";
 
-export default function CylinderGroup({ length, sortMethod, speed }) {
+export default function CylinderGroup({
+  length,
+  sortMethod,
+  speed,
+  height,
+  setHeight,
+}) {
   const meshRef = useRef();
   const colorRef = useRef();
   const colorArray = useMemo(() => new Float32Array(length * 3), [length]);
-  const [height, setHeight] = useState(0);
-
-  useCameraAnimation(height);
 
   const sortableList = useMemo(
     () => new SortableList(length, meshRef, colorRef, colorArray),
@@ -19,7 +21,7 @@ export default function CylinderGroup({ length, sortMethod, speed }) {
 
   useEffect(() => {
     setHeight(sortableList.width / 2);
-  }, [sortableList]);
+  }, [sortableList, setHeight]);
 
   useEffect(() => {
     sortableList.setSpeed(speed);

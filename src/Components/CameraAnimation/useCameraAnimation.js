@@ -27,14 +27,18 @@ const setTargetParameters = (parameters, height) => {
   parameters.position.targetY = height * 2;
   parameters.position.targetZ = (height * 2) / Math.tan(0.45);
 
+  parameters.target.targetX = 0;
+  parameters.target.targetY = 0;
+  parameters.target.targetZ = 0;
+
   parameters.up.targetX = 0;
   parameters.up.targetY = 1;
   parameters.up.targetZ = 0;
 };
 
-export default function useCameraAnimation(height) {
+export default function useCameraAnimation(controls, height) {
   const { camera } = useThree();
-  const parameters = useRef({ position: null, up: null });
+  const parameters = useRef({ position: null, target: null, up: null });
   const progress = useRef(0);
   const animating = useRef(false);
   const ignoreStart = useRef(true);
@@ -46,6 +50,7 @@ export default function useCameraAnimation(height) {
       return;
     }
     parameters.current.position = { ...camera.position };
+    parameters.current.target = { ...controls.current.target };
     parameters.current.up = { ...camera.up };
     progress.current = 0;
     animating.current = true;
@@ -53,15 +58,15 @@ export default function useCameraAnimation(height) {
       updateSource(parameter)
     );
     setTargetParameters(parameters.current, height);
-    camera.lookAt(0, 0, 0);
-  }, [camera, height]);
+  }, [camera, controls, height]);
 
   useFrame(() => {
     if (!animating.current) return;
 
-    progress.current += 0.05;
+    progress.current += 0.01;
     interpolateParameters(parameters.current, progress.current);
     camera.position.set(...Object.values(parameters.current.position));
+    controls.current.target.set(...Object.values(parameters.current.target));
     camera.up.set(...Object.values(parameters.current.up));
 
     if (progress.current >= 1) animating.current = false;

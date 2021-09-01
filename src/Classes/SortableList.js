@@ -10,6 +10,13 @@ import RadixSort from "./sorting/radixSort";
 const scratchObject3D = new Object3D();
 const scratchColor = new Color();
 
+const sortingClasses = {
+  selection: SelectionSort,
+  bubble: BubbleSort,
+  quick: QuickSort,
+  merge: MergeSort,
+  radix: RadixSort,
+};
 export default class SortableList {
   constructor(length, meshRef, colorRef, colorArray) {
     this.ready = false;
@@ -21,7 +28,7 @@ export default class SortableList {
     this.shuffle();
     this.layout = spiralLayout;
     this.generateLayout();
-    this.sortingClass = new BubbleSort(this.array);
+    this.sortFunction = null;
     this.speed = 100;
   }
 
@@ -42,10 +49,17 @@ export default class SortableList {
       const randomIndex =
         Math.floor(Math.random() * (this.array.length - i)) + i;
       this.array[i].swap(this.array[randomIndex]);
+      this.array[i].setColorNormal();
     }
   }
   generateLayout() {
     this.layout(this.array);
+  }
+  updateSortMethod(sortMethod) {
+    const SortingClass = sortingClasses[sortMethod];
+    this.sortFunction = new SortingClass(this.array);
+    this.shuffle();
+    this.updateAll();
   }
 
   updateAll() {
@@ -80,7 +94,7 @@ export default class SortableList {
     if (!this.ready) return;
     const indices = new Set();
     for (let i = 0; i < this.speed; i++) {
-      const res = this.sortingClass.sort();
+      const res = this.sortFunction.sort();
       if (res === false) break;
       res.forEach((index) => indices.add(index));
     }

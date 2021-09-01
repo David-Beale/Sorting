@@ -1,31 +1,45 @@
 import "./App.css";
+import { useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stats, Loader, Sky } from "@react-three/drei";
 import CylinderGroup from "./Components/CylinderGroup/CylinderGroup";
+import Rig from "./Components/Rig/Rig";
+import Menu from "./Components/Menu/Menu";
 
 const length = 500;
 export default function App() {
+  const [sortMethod, setSortMethod] = useState("selection");
+  const [cameraLock, setCameraLock] = useState(false);
+  const mouse = useRef([0, 0]);
+
+  const onMouseMove = (e) => {
+    mouse.current = [
+      2500 * (e.clientX / window.innerWidth - 0.5),
+      1500 * (e.clientY / window.innerHeight - 0.5),
+    ];
+  };
+
   return (
-    <div className="container">
+    <div
+      className="container"
+      onPointerMove={onMouseMove}
+      onClick={() => setSortMethod("bubble")}
+    >
+      <Menu cameraLock={cameraLock} setCameraLock={setCameraLock} />
       <Canvas
         camera={{
-          position: [0, 50, 200],
+          position: [0, 50, 150],
           fov: 40,
           far: 100000,
         }}
       >
-        <Stats />
+        <Stats className="stats" />
         <ambientLight intensity={0.5} />
         <directionalLight intensity={0.5} position={[0, 20, 20]} />
         <directionalLight intensity={0.5} position={[20, 20, 0]} />
-        <Sky
-          distance={10000}
-          inclination={0.51}
-          azimuth={0.6}
-          rayleigh={1.25}
-        />
-        <CylinderGroup length={length} />
-        <OrbitControls />
+        <Sky distance={10000} inclination={1} azimuth={0.6} rayleigh={0.1} />
+        <CylinderGroup length={length} sortMethod={sortMethod} />
+        {cameraLock ? <OrbitControls /> : <Rig mouse={mouse} />}
       </Canvas>
       <Loader />
     </div>

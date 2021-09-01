@@ -11,11 +11,11 @@ const scratchObject3D = new Object3D();
 const scratchColor = new Color();
 
 const sortingClasses = {
-  selection: SelectionSort,
-  bubble: BubbleSort,
-  quick: QuickSort,
-  merge: MergeSort,
-  radix: RadixSort,
+  Selection: SelectionSort,
+  Bubble: BubbleSort,
+  Quick: QuickSort,
+  Merge: MergeSort,
+  Radix: RadixSort,
 };
 export default class SortableList {
   constructor(length, meshRef, colorRef, colorArray) {

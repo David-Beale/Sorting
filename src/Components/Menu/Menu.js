@@ -5,8 +5,14 @@ import MenuButton from "./Components/MenuButton/MenuButton";
 import ToggleCameraLock from "./Components/ToggleCameraLock/ToggleCameraLock";
 
 import { Container, TopContainer } from "./MenuStyle";
+import MethodButtons from "./Components/MethodButtons/MethodButtons";
 
-export default memo(function Menu({ cameraLock, setCameraLock }) {
+export default memo(function Menu({
+  cameraLock,
+  setCameraLock,
+  sortMethod,
+  setSortMethod,
+}) {
   const [menuOpen, setMenuOpen] = useState(true);
 
   return (
@@ -20,6 +26,10 @@ export default memo(function Menu({ cameraLock, setCameraLock }) {
               setCameraLock={setCameraLock}
             />
           </TopContainer>
+          <MethodButtons
+            sortMethod={sortMethod}
+            setSortMethod={setSortMethod}
+          />
         </Container>
       </Drawer>
     </>

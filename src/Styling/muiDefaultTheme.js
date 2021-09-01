@@ -1,7 +1,7 @@
-import { createMuiTheme } from "@material-ui/core/styles";
+import { createTheme } from "@material-ui/core/styles";
 
 export const makeMuiTheme = () =>
-  createMuiTheme({
+  createTheme({
     palette: {
       primary: {
         main: "rgb(25,120,216)",

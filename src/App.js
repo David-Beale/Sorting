@@ -8,7 +8,7 @@ import Menu from "./Components/Menu/Menu";
 
 const length = 500;
 export default function App() {
-  const [sortMethod, setSortMethod] = useState("selection");
+  const [sortMethod, setSortMethod] = useState("Selection");
   const [cameraLock, setCameraLock] = useState(false);
   const mouse = useRef([0, 0]);
 
@@ -20,12 +20,13 @@ export default function App() {
   };
 
   return (
-    <div
-      className="container"
-      onPointerMove={onMouseMove}
-      onClick={() => setSortMethod("bubble")}
-    >
-      <Menu cameraLock={cameraLock} setCameraLock={setCameraLock} />
+    <div className="container" onPointerMove={onMouseMove}>
+      <Menu
+        cameraLock={cameraLock}
+        setCameraLock={setCameraLock}
+        sortMethod={sortMethod}
+        setSortMethod={setSortMethod}
+      />
       <Canvas
         camera={{
           position: [0, 50, 150],

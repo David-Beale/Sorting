@@ -55,6 +55,9 @@ export default class SortableList {
   generateLayout() {
     this.layout(this.array);
   }
+  setSpeed(speed) {
+    this.speed = speed;
+  }
   updateSortMethod(sortMethod) {
     const SortingClass = sortingClasses[sortMethod];
     this.sortFunction = new SortingClass(this.array);

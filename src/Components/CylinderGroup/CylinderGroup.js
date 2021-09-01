@@ -3,7 +3,7 @@ import SortableList from "../../Classes/SortableList";
 import { VertexColors } from "three";
 import { useFrame } from "@react-three/fiber";
 
-export default function CylinderGroup({ length, sortMethod }) {
+export default function CylinderGroup({ length, sortMethod, speed }) {
   const meshRef = useRef();
   const colorRef = useRef();
   const colorArray = useMemo(() => new Float32Array(length * 3), [length]);
@@ -12,6 +12,10 @@ export default function CylinderGroup({ length, sortMethod }) {
     () => new SortableList(length, meshRef, colorRef, colorArray),
     [length, colorArray]
   );
+
+  useEffect(() => {
+    sortableList.setSpeed(speed);
+  }, [sortableList, speed]);
 
   useEffect(() => {
     sortableList.updateSortMethod(sortMethod);

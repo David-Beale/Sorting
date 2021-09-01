@@ -6,12 +6,16 @@ import ToggleCameraLock from "./Components/ToggleCameraLock/ToggleCameraLock";
 
 import { Container, TopContainer } from "./MenuStyle";
 import MethodButtons from "./Components/MethodButtons/MethodButtons";
+import SpeedSlider from "./Components/SpeedSlider/SpeedSlider";
 
 export default memo(function Menu({
   cameraLock,
   setCameraLock,
   sortMethod,
   setSortMethod,
+  speed,
+  setSpeed,
+  length,
 }) {
   const [menuOpen, setMenuOpen] = useState(true);
 
@@ -30,6 +34,7 @@ export default memo(function Menu({
             sortMethod={sortMethod}
             setSortMethod={setSortMethod}
           />
+          <SpeedSlider speed={speed} setSpeed={setSpeed} length={length} />
         </Container>
       </Drawer>
     </>

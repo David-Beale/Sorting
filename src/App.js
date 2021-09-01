@@ -9,6 +9,7 @@ import Menu from "./Components/Menu/Menu";
 const length = 500;
 export default function App() {
   const [sortMethod, setSortMethod] = useState("Selection");
+  const [speed, setSpeed] = useState(1);
   const [cameraLock, setCameraLock] = useState(false);
   const mouse = useRef([0, 0]);
 
@@ -26,6 +27,9 @@ export default function App() {
         setCameraLock={setCameraLock}
         sortMethod={sortMethod}
         setSortMethod={setSortMethod}
+        speed={speed}
+        setSpeed={setSpeed}
+        length={length}
       />
       <Canvas
         camera={{
@@ -39,7 +43,7 @@ export default function App() {
         <directionalLight intensity={0.5} position={[0, 20, 20]} />
         <directionalLight intensity={0.5} position={[20, 20, 0]} />
         <Sky distance={10000} inclination={1} azimuth={0.6} rayleigh={0.1} />
-        <CylinderGroup length={length} sortMethod={sortMethod} />
+        <CylinderGroup length={length} sortMethod={sortMethod} speed={speed} />
         {cameraLock ? <OrbitControls /> : <Rig mouse={mouse} />}
       </Canvas>
       <Loader />

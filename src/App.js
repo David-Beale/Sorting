@@ -1,7 +1,7 @@
 import "./App.css";
 import { useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Stats, Loader, Sky } from "@react-three/drei";
+import { Stats, Loader, Sky } from "@react-three/drei";
 import CylinderGroup from "./Components/CylinderGroup/CylinderGroup";
 import Rig from "./Components/Rig/Rig";
 import Menu from "./Components/Menu/Menu";

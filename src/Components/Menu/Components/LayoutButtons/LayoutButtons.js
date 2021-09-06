@@ -26,13 +26,13 @@ export default function LayoutButtons({ layout, setLayout }) {
         />
         <Button
           Icon={ChangeHistoryIcon}
-          name="Triangle"
+          name="Pyramid"
           layout={layout}
           setLayout={setLayout}
         />
         <Button
           Icon={RadioButtonUncheckedIcon}
-          name="Circle"
+          name="Spiral"
           layout={layout}
           setLayout={setLayout}
         />

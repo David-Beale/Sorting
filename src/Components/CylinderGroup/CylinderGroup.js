@@ -34,11 +34,11 @@ export default function CylinderGroup({
 
   useEffect(() => {
     switch (layout) {
-      case "Circle":
+      case "Spiral":
         return setHeight(sortableList.width / 2);
       case "Line":
         return setHeight(sortableList.width / 2.5);
-      case "Triangle":
+      case "Pyramid":
         return setHeight(sortableList.width / 2);
       case "Square":
         return setHeight(sortableList.width / 2);

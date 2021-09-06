@@ -13,7 +13,7 @@ export default function App() {
   const [speed, setSpeed] = useState(1);
   const [cameraLock, setCameraLock] = useState(true);
   const [height, setHeight] = useState(0);
-  const [layout, setLayout] = useState("Circle");
+  const [layout, setLayout] = useState("Spiral");
   const mouse = useRef([0, 0]);
 
   const onMouseMove = (e) => {

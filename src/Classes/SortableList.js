@@ -2,7 +2,7 @@ import SortableItem from "./SortableItem";
 import {
   spiralLayout,
   lineLayout,
-  triangleLayout,
+  pyramidLayout,
   SquareLayout,
 } from "./layouts";
 import { Object3D, Color } from "three";
@@ -24,9 +24,9 @@ const sortingClasses = {
 };
 
 const layoutFuncs = {
-  Circle: spiralLayout,
+  Spiral: spiralLayout,
   Line: lineLayout,
-  Triangle: triangleLayout,
+  Pyramid: pyramidLayout,
   Square: SquareLayout,
 };
 export default class SortableList {

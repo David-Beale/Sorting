@@ -21,29 +21,53 @@ export const lineLayout = (list) => {
     item.z = 0;
   }
 };
-export const triangleLayout = (list) => {
-  const sideLength = Math.ceil(Math.sqrt(list.length));
-  const middle = Math.floor(sideLength / 2);
-
-  let x = sideLength - middle;
-  let z = -middle;
+export const pyramidLayout = (list) => {
+  let x = 0;
+  let z = 0;
   let counter = 0;
-  let size = 1;
-  let currentSize = 0;
-  while (counter < list.length) {
-    if (currentSize === size) {
-      currentSize = 0;
-      x = sideLength - middle - size;
-      z = -middle;
-      size++;
+  let start = 0;
+  let edgeSize = 1;
+
+  loop1: while (true) {
+    x = start - 1;
+    z = start;
+    let array = [];
+    for (let i = 0; i < edgeSize; i++) {
+      x++;
+      array.push([x, z]);
     }
-    const item = list[counter];
-    item.x = x * 2.5;
-    item.z = z * 2.5;
-    x++;
-    z++;
-    currentSize++;
-    counter++;
+    for (let i = 0; i < edgeSize - 1; i++) {
+      z++;
+      array.push([x, z]);
+    }
+    for (let i = 0; i < edgeSize - 1; i++) {
+      x--;
+      array.push([x, z]);
+    }
+    for (let i = 0; i < edgeSize - 1; i++) {
+      z--;
+      array.push([x, z]);
+    }
+    let startPointer = 0;
+    let endPointer = array.length - 1;
+    while (startPointer <= endPointer) {
+      const item1 = list[counter];
+      const [x1, z1] = array[startPointer];
+      item1.x = x1 * 2.5;
+      item1.z = z1 * 2.5;
+      counter++;
+      if (counter === list.length) break loop1;
+      const item2 = list[counter];
+      const [x2, z2] = array[endPointer];
+      item2.x = x2 * 2.5;
+      item2.z = z2 * 2.5;
+      counter++;
+      if (counter === list.length) break loop1;
+      startPointer++;
+      endPointer--;
+    }
+    start--;
+    edgeSize += 2;
   }
 };
 export const SquareLayout = (list) => {

@@ -13,6 +13,7 @@ export default function App() {
   const [speed, setSpeed] = useState(1);
   const [cameraLock, setCameraLock] = useState(true);
   const [height, setHeight] = useState(0);
+  const [layout, setLayout] = useState("Circular");
   const mouse = useRef([0, 0]);
 
   const onMouseMove = (e) => {
@@ -29,6 +30,8 @@ export default function App() {
         setCameraLock={setCameraLock}
         sortMethod={sortMethod}
         setSortMethod={setSortMethod}
+        layout={layout}
+        setLayout={setLayout}
         speed={speed}
         setSpeed={setSpeed}
         length={length}
@@ -51,6 +54,7 @@ export default function App() {
           sortMethod={sortMethod}
           speed={speed}
           height={height}
+          layout={layout}
           setHeight={setHeight}
         />
         {!cameraLock && <Rig mouse={mouse} height={height} />}

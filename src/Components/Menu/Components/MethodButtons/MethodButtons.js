@@ -1,11 +1,11 @@
 import React from "react";
 import Button from "./Buttons/Button";
 
-import { MethodContainer, ButtonContainer } from "./MethodStyle";
+import { ButtonsOuterContainer, ButtonContainer } from "../../MenuStyle";
 
 export default function MethodButtons({ sortMethod, setSortMethod }) {
   return (
-    <MethodContainer>
+    <ButtonsOuterContainer>
       Sorting method
       <ButtonContainer>
         <Button
@@ -39,6 +39,6 @@ export default function MethodButtons({ sortMethod, setSortMethod }) {
           setSortMethod={setSortMethod}
         />
       </ButtonContainer>
-    </MethodContainer>
+    </ButtonsOuterContainer>
   );
 }

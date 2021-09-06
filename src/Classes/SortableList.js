@@ -48,6 +48,7 @@ export default class SortableList {
   shuffle() {
     // Fisher–Yates shuffle
     if (this.ready) {
+      //set the original height before shuffling for animation
       this.array.forEach((item) => item.setSourceHeight());
     }
     for (let i = 0; i < this.array.length - 1; i++) {

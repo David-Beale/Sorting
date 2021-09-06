@@ -8,6 +8,7 @@ import { Container, TopContainer } from "./MenuStyle";
 import MethodButtons from "./Components/MethodButtons/MethodButtons";
 import SpeedSlider from "./Components/SpeedSlider/SpeedSlider";
 import Length from "./Components/Length/Length";
+import LayoutButtons from "./Components/LayoutButtons/LayoutButtons";
 
 export default memo(function Menu({
   cameraLock,
@@ -18,6 +19,8 @@ export default memo(function Menu({
   setSpeed,
   length,
   setLength,
+  layout,
+  setLayout,
 }) {
   const [menuOpen, setMenuOpen] = useState(true);
 
@@ -32,6 +35,7 @@ export default memo(function Menu({
               setCameraLock={setCameraLock}
             />
           </TopContainer>
+          <LayoutButtons layout={layout} setLayout={setLayout} />
           <MethodButtons
             sortMethod={sortMethod}
             setSortMethod={setSortMethod}

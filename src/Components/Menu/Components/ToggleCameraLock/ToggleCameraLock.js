@@ -2,7 +2,7 @@ import React from "react";
 import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";
 
 import { Tooltip } from "@material-ui/core";
-import { StyledIconButtonTop } from "../ToggleButtonStyle";
+import { StyledIconButtonTop } from "../../MenuStyle";
 
 export default function ToggleCameraLock({ cameraLock, setCameraLock }) {
   const onClick = () => {

@@ -3,17 +3,14 @@ import React from "react";
 import { StyledIconButton } from "../../../MenuStyle";
 import { Tooltip } from "@material-ui/core";
 
-export default function Button({ text, name, setSortMethod, sortMethod }) {
+export default function Button({ Icon, name, setLayout, layout }) {
   const onClick = () => {
-    setSortMethod([name]);
+    setLayout([name]);
   };
   return (
     <Tooltip title={name}>
-      <StyledIconButton
-        enabled={sortMethod[0] === name ? 1 : 0}
-        onClick={onClick}
-      >
-        {text}
+      <StyledIconButton enabled={layout === name ? 1 : 0} onClick={onClick}>
+        <Icon />
       </StyledIconButton>
     </Tooltip>
   );

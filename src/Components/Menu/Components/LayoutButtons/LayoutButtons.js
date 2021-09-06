@@ -2,6 +2,7 @@ import React from "react";
 import ShowChartIcon from "@material-ui/icons/ShowChart";
 import RadioButtonUncheckedIcon from "@material-ui/icons/RadioButtonUnchecked";
 import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
+import ChangeHistoryIcon from "@material-ui/icons/ChangeHistory";
 
 import Button from "./Buttons/Button";
 import { ButtonsOuterContainer, ButtonContainer } from "../../MenuStyle";
@@ -18,14 +19,20 @@ export default function LayoutButtons({ layout, setLayout }) {
           setLayout={setLayout}
         />
         <Button
-          Icon={RadioButtonUncheckedIcon}
-          name="Circular"
+          Icon={CheckBoxOutlineBlankIcon}
+          name="Square"
           layout={layout}
           setLayout={setLayout}
         />
         <Button
-          Icon={CheckBoxOutlineBlankIcon}
-          name="Square"
+          Icon={ChangeHistoryIcon}
+          name="Triangle"
+          layout={layout}
+          setLayout={setLayout}
+        />
+        <Button
+          Icon={RadioButtonUncheckedIcon}
+          name="Circle"
           layout={layout}
           setLayout={setLayout}
         />

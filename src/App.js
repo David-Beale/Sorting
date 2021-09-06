@@ -8,12 +8,12 @@ import Menu from "./Components/Menu/Menu";
 import Controls from "./Components/CameraAnimation/Controls";
 
 export default function App() {
-  const [length, setLength] = useState(500);
+  const [length, setLength] = useState(528);
   const [sortMethod, setSortMethod] = useState(["Selection"]);
   const [speed, setSpeed] = useState(1);
   const [cameraLock, setCameraLock] = useState(true);
   const [height, setHeight] = useState(0);
-  const [layout, setLayout] = useState("Circular");
+  const [layout, setLayout] = useState("Circle");
   const mouse = useRef([0, 0]);
 
   const onMouseMove = (e) => {
@@ -58,7 +58,7 @@ export default function App() {
           setHeight={setHeight}
         />
         {!cameraLock && <Rig mouse={mouse} height={height} />}
-        <Controls height={height} cameraLock={cameraLock} />
+        <Controls height={height} cameraLock={cameraLock} layout={layout} />
       </Canvas>
       <Loader />
     </div>

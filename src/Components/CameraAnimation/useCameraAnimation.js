@@ -22,10 +22,32 @@ const interpolateParameters = (parameters, progress) => {
   });
 };
 
-const setTargetParameters = (parameters, height) => {
-  parameters.position.targetX = 0;
-  parameters.position.targetY = height * 2;
-  parameters.position.targetZ = (height * 2) / Math.tan(0.45);
+const setTargetParameters = (parameters, height, layout) => {
+  switch (layout) {
+    case "Circle":
+      parameters.position.targetX = 0;
+      parameters.position.targetY = height * 2;
+      parameters.position.targetZ = (height * 2) / Math.tan(0.45);
+      break;
+    case "Line":
+      parameters.position.targetX = 0;
+      parameters.position.targetY = height;
+      parameters.position.targetZ = (height * 2) / Math.tan(0.45);
+      break;
+    case "Triangle":
+      parameters.position.targetX = height * 2;
+      parameters.position.targetY = height;
+      parameters.position.targetZ = (height * 2) / Math.tan(0.45);
+      break;
+    case "Square":
+      parameters.position.targetX = height * 2;
+      parameters.position.targetY = height;
+      parameters.position.targetZ = (height * 2) / Math.tan(0.45);
+      break;
+
+    default:
+      break;
+  }
 
   parameters.target.targetX = 0;
   parameters.target.targetY = 0;
@@ -36,12 +58,17 @@ const setTargetParameters = (parameters, height) => {
   parameters.up.targetZ = 0;
 };
 
-export default function useCameraAnimation(controls, height) {
+export default function useCameraAnimation(controls, height, layout) {
   const { camera } = useThree();
   const parameters = useRef({ position: null, target: null, up: null });
   const progress = useRef(0);
   const animating = useRef(false);
   const ignoreStart = useRef(true);
+  const layoutRef = useRef(layout);
+
+  useEffect(() => {
+    layoutRef.current = layout;
+  }, [layout]);
 
   useEffect(() => {
     if (!height) return;
@@ -57,8 +84,8 @@ export default function useCameraAnimation(controls, height) {
     Object.values(parameters.current).forEach((parameter) =>
       updateSource(parameter)
     );
-    setTargetParameters(parameters.current, height);
-  }, [camera, controls, height]);
+    setTargetParameters(parameters.current, height, layoutRef.current);
+  }, [camera, controls, height, layoutRef]);
 
   useFrame(() => {
     if (!animating.current) return;

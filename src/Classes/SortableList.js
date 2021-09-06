@@ -1,5 +1,10 @@
 import SortableItem from "./SortableItem";
-import { spiralLayout, lineLayout } from "./layouts";
+import {
+  spiralLayout,
+  lineLayout,
+  triangleLayout,
+  SquareLayout,
+} from "./layouts";
 import { Object3D, Color } from "three";
 import SelectionSort from "./sorting/selectionSort";
 import BubbleSort from "./sorting/bubbleSort";
@@ -19,8 +24,10 @@ const sortingClasses = {
 };
 
 const layoutFuncs = {
-  Circular: spiralLayout,
+  Circle: spiralLayout,
   Line: lineLayout,
+  Triangle: triangleLayout,
+  Square: SquareLayout,
 };
 export default class SortableList {
   constructor(length, meshRef, colorRef, colorArray) {

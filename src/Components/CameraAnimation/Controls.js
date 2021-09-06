@@ -14,7 +14,7 @@ const enabled = {
   MIDDLE: THREE.MOUSE.ZOOM,
   RIGHT: THREE.MOUSE.PAN,
 };
-export default function Controls({ height, lock }) {
+export default function Controls({ height, lock, layout }) {
   const controls = useRef();
   const { camera, gl } = useThree();
 
@@ -24,7 +24,7 @@ export default function Controls({ height, lock }) {
   });
 
   // run the layout, animating on change
-  useCameraAnimation(controls, height);
+  useCameraAnimation(controls, height, layout);
 
   return (
     <orbitControls

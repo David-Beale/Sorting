@@ -32,7 +32,7 @@ export default function Controls({ height, lock }) {
       args={[camera, gl.domElement]}
       enableDamping
       dynamicDampingFactor={0.1}
-      maxDistance={3000}
+      maxDistance={100000}
       mouseButtons={lock ? disabled : enabled}
       keys={[]}
     />

@@ -5,7 +5,7 @@ import { Tooltip } from "@material-ui/core";
 
 export default function Button({ Icon, name, setLayout, layout }) {
   const onClick = () => {
-    setLayout([name]);
+    setLayout(name);
   };
   return (
     <Tooltip title={name}>

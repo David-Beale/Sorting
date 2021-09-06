@@ -13,3 +13,11 @@ export const spiralLayout = (list) => {
     item.z = radius * Math.sin(theta);
   }
 };
+export const lineLayout = (list) => {
+  const middle = Math.floor(list.length / 2);
+  for (let i = 0; i < list.length; i++) {
+    const item = list[i];
+    item.x = (list.length - i - middle) * 2.5;
+    item.z = 0;
+  }
+};

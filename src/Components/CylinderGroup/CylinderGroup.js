@@ -9,6 +9,7 @@ export default function CylinderGroup({
   speed,
   height,
   setHeight,
+  layout,
 }) {
   const meshRef = useRef();
   const colorRef = useRef();
@@ -20,8 +21,8 @@ export default function CylinderGroup({
   );
 
   useEffect(() => {
-    setHeight(sortableList.width / 2);
-  }, [sortableList, setHeight]);
+    sortableList.setLayout(layout);
+  }, [sortableList, layout]);
 
   useEffect(() => {
     sortableList.setSpeed(speed);
@@ -30,6 +31,17 @@ export default function CylinderGroup({
   useEffect(() => {
     sortableList.updateSortMethod(sortMethod[0]);
   }, [sortableList, sortMethod]);
+
+  useEffect(() => {
+    switch (layout) {
+      case "Circular":
+        return setHeight(sortableList.width / 2);
+      case "Line":
+        return setHeight(sortableList.width / 2.5);
+      default:
+        break;
+    }
+  }, [sortableList, layout, setHeight]);
 
   useFrame(() => {
     sortableList.sort();

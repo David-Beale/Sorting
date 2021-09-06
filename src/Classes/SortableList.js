@@ -1,5 +1,5 @@
 import SortableItem from "./SortableItem";
-import { spiralLayout } from "./layouts";
+import { spiralLayout, lineLayout } from "./layouts";
 import { Object3D, Color } from "three";
 import SelectionSort from "./sorting/selectionSort";
 import BubbleSort from "./sorting/bubbleSort";
@@ -17,6 +17,11 @@ const sortingClasses = {
   Merge: MergeSort,
   Radix: RadixSort,
 };
+
+const layoutFuncs = {
+  Circular: spiralLayout,
+  Line: lineLayout,
+};
 export default class SortableList {
   constructor(length, meshRef, colorRef, colorArray) {
     this.ready = false;
@@ -25,11 +30,7 @@ export default class SortableList {
     this.colorArray = colorArray;
     this.length = length;
     this.array = this.initArray();
-    this.layout = spiralLayout;
-    this.generateLayout();
-    this.setHeights();
-    this.shuffle();
-    this.sortFunction = null;
+    this.sorter = null;
     this.speed = null;
     this.animateProgress = 0;
     this.animating = false;
@@ -44,13 +45,13 @@ export default class SortableList {
     }
     return array;
   }
+  setSourceHeights() {
+    //set the original height before shuffling for animation
+    this.array.forEach((item) => item.setSourceHeight());
+  }
 
   shuffle() {
     // Fisher–Yates shuffle
-    if (this.ready) {
-      //set the original height before shuffling for animation
-      this.array.forEach((item) => item.setSourceHeight());
-    }
     for (let i = 0; i < this.array.length - 1; i++) {
       const item = this.array[i];
       //random index between i and length
@@ -62,8 +63,20 @@ export default class SortableList {
     const finalItem = this.array[this.array.length - 1];
     finalItem.setColorNormal();
   }
-  generateLayout() {
-    this.layout(this.array);
+
+  setLayout(layout) {
+    if (this.ready) {
+      this.setSourceHeights();
+    }
+    layoutFuncs[layout](this.array);
+    this.setHeights();
+    if (this.ready) {
+      this.sorter = new this.SortingClass(this.array, this.width);
+      this.shuffle();
+      this.resetColors();
+      this.animateProgress = 0;
+      this.animating = true;
+    }
   }
   setHeights() {
     let minX = Infinity;
@@ -84,8 +97,11 @@ export default class SortableList {
     this.speed = speed;
   }
   updateSortMethod(sortMethod) {
-    const SortingClass = sortingClasses[sortMethod];
-    this.sortFunction = new SortingClass(this.array, this.width);
+    this.SortingClass = sortingClasses[sortMethod];
+    this.sorter = new this.SortingClass(this.array, this.width);
+    if (this.ready) {
+      this.setSourceHeights();
+    }
     this.shuffle();
     this.resetColors();
     if (!this.ready) {
@@ -155,7 +171,7 @@ export default class SortableList {
 
     const indices = new Set();
     for (let i = 0; i < this.speed; i++) {
-      const res = this.sortFunction.sort();
+      const res = this.sorter.sort();
       if (res === false) break;
       res.forEach((index) => indices.add(index));
     }

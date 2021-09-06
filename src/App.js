@@ -48,7 +48,7 @@ export default function App() {
         <ambientLight intensity={0.5} />
         <directionalLight intensity={0.5} position={[0, 20, 20]} />
         <directionalLight intensity={0.5} position={[20, 20, 0]} />
-        <Sky distance={10000} inclination={1} azimuth={0.6} rayleigh={0.1} />
+        <Sky distance={100000} inclination={1} azimuth={0.6} rayleigh={0.1} />
         <CylinderGroup
           length={length}
           sortMethod={sortMethod}

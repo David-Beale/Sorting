@@ -103,7 +103,7 @@ export default class SortableList {
   setSpeed(speed) {
     this.speed = speed;
   }
-  updateSortMethod(sortMethod) {
+  setSortMethod(sortMethod) {
     this.SortingClass = sortingClasses[sortMethod];
     this.sorter = new this.SortingClass(this.array, this.width);
     if (this.ready) {
